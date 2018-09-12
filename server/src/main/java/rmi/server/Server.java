@@ -16,9 +16,9 @@ public class Server {
 	public static void main(String[] args) throws RemoteException {
 		logger.info("ex2 Server Starting ...");
 		
-		ConcertServant concertServant = new ConcertServant(new HashMap<>());
+		Servant servant = new Servant(new HashMap<>());
 		
-		final Remote remote = UnicastRemoteObject.exportObject(concertServant, 0);
+		final Remote remote = UnicastRemoteObject.exportObject(servant, 0);
 		final Registry registry = LocateRegistry.getRegistry();
 		
 		registry.rebind("ConcertService", remote);

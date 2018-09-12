@@ -2,9 +2,6 @@ package rmi.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rmi.ConcertService;
-import rmi.TicketClient;
-import rmi.TicketService;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
