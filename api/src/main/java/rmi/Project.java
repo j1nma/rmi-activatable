@@ -9,13 +9,18 @@ public class Project {
 	
 	private final Integer goal;
 	
-	private final List<Reward> rewards;
+	private final List<Reward> prizes;
 	
+	private Integer accumulated;
 	
-	public Project(String name, Integer goal, List<Reward> rewards) {
+	private ProjectState state;
+	
+	public Project(String name, Integer goal, List<Reward> prizes) {
 		this.name = name;
 		this.goal = goal;
-		this.rewards = rewards;
+		this.prizes = prizes;
+		this.accumulated = 0;
+		this.state = ProjectState.TO_CONFIRM;
 	}
 	
 	public String getName() {
@@ -27,8 +32,24 @@ public class Project {
 		return goal;
 	}
 	
-	public List<Reward> getRewards() {
-		return rewards;
+	public Integer getAccumulated() {
+		return accumulated;
+	}
+	
+	public ProjectState getState() {
+		return state;
+	}
+	
+	public void setState(ProjectState state) {
+		this.state = state;
+	}
+	
+	public List<Reward> getPrizes() {
+		return prizes;
+	}
+	
+	public void sumPledge(int amount) {
+		this.accumulated += amount;
 	}
 	
 	@Override
@@ -36,15 +57,13 @@ public class Project {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Project project = (Project) o;
-		return Objects.equals(name, project.name) &&
-				Objects.equals(goal, project.goal) &&
-				Objects.equals(rewards, project.rewards);
+		return Objects.equals(name, project.name);
 	}
 	
 	@Override
 	public int hashCode() {
 		
-		return Objects.hash(name, goal, rewards);
+		return Objects.hash(name);
 	}
 	
 	@Override
@@ -52,7 +71,9 @@ public class Project {
 		return "Project{" +
 				"name='" + name + '\'' +
 				", goal=" + goal +
-				", rewards=" + rewards +
+				", prizes=" + prizes +
+				", accumulated=" + accumulated +
+				", state=" + state +
 				'}';
 	}
 }
