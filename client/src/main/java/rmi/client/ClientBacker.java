@@ -3,19 +3,24 @@ package rmi.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rmi.CrowdfundingBackerResponseHandler;
+import rmi.CrowdfundingBackerService;
+import rmi.Project;
 
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class ClientBacker {
 	private static Logger logger = LoggerFactory.getLogger(ClientBacker.class);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		logger.info("Client Backer Starting ...");
 		
-		final ConcertService concertService = (ConcertService) Naming.lookup("//localhost:1099/ConcertService");
-		final TicketService ticketService = (TicketService) Naming.lookup("//localhost:1099/TicketService");
+		final CrowdfundingBackerService backerService = (CrowdfundingBackerService) Naming.lookup("//localhost:1099/BackerService");
 		
 		// Instantiate handler
 		CrowdfundingBackerResponseHandler clientNotificator = new ClientNotificator();
@@ -23,10 +28,12 @@ public class ClientBacker {
 		// Export handler
 		final Remote remote = UnicastRemoteObject.exportObject(clientNotificator, 0);
 		
-		concertService.create("concertABC", 7, 10, 3);
+		List<Project> projects = backerService.listProjects();
 		
-		for (int i = 0; i < 12; i++) {
-			ticketService.applyForTicket("concertABC", clientNotificator);
+		System.out.println(projects);
+		
+		for (int i = 0; i < projects.size(); i++) {
+			backerService.pledge(projects.get(i), i * i * i, clientNotificator);
 		}
 	}
 }
