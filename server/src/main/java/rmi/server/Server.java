@@ -14,15 +14,15 @@ public class Server {
 	private static Logger logger = LoggerFactory.getLogger(Server.class);
 	
 	public static void main(String[] args) throws RemoteException {
-		logger.info("ex2 Server Starting ...");
+		logger.info("Server Starting ...");
 		
 		Servant servant = new Servant(new HashMap<>());
 		
 		final Remote remote = UnicastRemoteObject.exportObject(servant, 0);
 		final Registry registry = LocateRegistry.getRegistry();
 		
-		registry.rebind("ConcertService", remote);
-		registry.rebind("TicketService", remote);
+		registry.rebind("BackerService", remote);
+		registry.rebind("InitiatorService", remote);
 		
 		
 	}
