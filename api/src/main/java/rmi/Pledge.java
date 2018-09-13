@@ -1,17 +1,20 @@
 package rmi;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class Pledge {
+public class Pledge implements Serializable {
 	
 	private final CrowdfundingBackerResponseHandler handler;
 	
 	private final Integer pledge;
 	
+	private final Reward reward;
 	
-	public Pledge(CrowdfundingBackerResponseHandler handler, Integer pledge) {
+	
+	public Pledge(CrowdfundingBackerResponseHandler handler, Integer pledge, Reward reward) {
 		this.handler = handler;
 		this.pledge = pledge;
+		this.reward = reward;
 	}
 	
 	public CrowdfundingBackerResponseHandler getHandler() {
@@ -22,26 +25,7 @@ public class Pledge {
 		return pledge;
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Pledge pledge1 = (Pledge) o;
-		return Objects.equals(handler, pledge1.handler) &&
-				Objects.equals(pledge, pledge1.pledge);
-	}
-	
-	@Override
-	public int hashCode() {
-		
-		return Objects.hash(handler, pledge);
-	}
-	
-	@Override
-	public String toString() {
-		return "Pledge{" +
-				"handler=" + handler +
-				", pledge=" + pledge +
-				'}';
+	public Reward getReward() {
+		return reward;
 	}
 }

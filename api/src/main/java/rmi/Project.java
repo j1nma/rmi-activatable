@@ -1,9 +1,10 @@
 package rmi;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class Project {
+public class Project implements Serializable {
 	
 	private final String name;
 	

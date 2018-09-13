@@ -43,7 +43,7 @@ public class Servant implements CrowdfundingInitiatiorService, CrowdfundingBacke
 				return;
 			}
 			
-			projects.get(p).add(new Pledge(supporter, amount));
+			projects.get(p).add(new Pledge(supporter, amount, reward));
 			
 			p.sumPledge(amount);
 			

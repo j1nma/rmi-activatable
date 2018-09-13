@@ -1,8 +1,9 @@
 package rmi;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Reward {
+public class Reward implements Serializable {
 	
 	private final String name;
 	
