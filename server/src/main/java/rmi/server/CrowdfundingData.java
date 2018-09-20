@@ -1,8 +1,10 @@
 package rmi.server;
 
+import rmi.Pledge;
 import rmi.Project;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,14 +19,14 @@ import java.util.Map;
  * aportes. Podría persistirse toda la información.
  */
 public class CrowdfundingData implements Serializable {
-	private static final long serialVersionUID = 4763557739487362456L;
-	private Map<String, Project> projects;
 	
-	public Map<String, Project> getProjects() {
+	private Map<Project, List<Pledge>> projects;
+	
+	public Map<Project, List<Pledge>> getProjects() {
 		return projects;
 	}
 	
-	public void setProjects(Map<String, Project> projects) {
+	public void setProjects(Map<Project, List<Pledge>> projects) {
 		this.projects = projects;
 	}
 }

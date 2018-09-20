@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.rmi.MarshalledObject;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -14,7 +15,7 @@ import java.rmi.registry.Registry;
 import java.util.Properties;
 
 public class ActivationServer {
-	private static final String SERVANT_CLASS = "pod.rmi.server.Servant";
+	private static final String SERVANT_CLASS = "rmi.server.Servant";
 	private static final String CODEBASE_PATH = "file:///Users/JuanmaAlonso/ITBA/POD/TP_5_ACTIVATION/rmi-activatable/server/target/classes";
 	private static final String POLICY_PATH = "file:///Users/JuanmaAlonso/ITBA/POD/TP_5_ACTIVATION/rmi-activatable/server/target/ex2-server-1.0-SNAPSHOT/java.policy";
 	private static Logger logger = LoggerFactory.getLogger(ActivationServer.class);
@@ -35,13 +36,31 @@ public class ActivationServer {
 		// 3) generar un ActivationDesc con la info de creacion para el objeto
 		// remoto ActivationGroupID que lo manejara, nombre de la clase y
 		// codebase(classpath)
+		
+		// Option 1
 //		final ActivationDesc servantDescription = new ActivationDesc(activationGroupID, SERVANT_CLASS,
 //				CODEBASE_PATH, null);
 		
-		final ActivationDesc servantDescription = new
-				ActivationDesc(activationGroupID, SERVANT_CLASS,
-				CODEBASE_PATH, new MarshalledObject(new
-				File("/tmp/objectStore.ser")));
+		// Option 2
+//		final ActivationDesc servantDescription = new
+//				ActivationDesc(activationGroupID, SERVANT_CLASS,
+//				CODEBASE_PATH, new MarshalledObject(new
+//				File("/tmp/objectStore.ser")));
+		
+		// Option 3
+		ActivationDesc remoteServiceDesc = new ActivationDesc(activationGroupID,
+				SERVANT_CLASS,
+				CODEBASE_PATH,
+				new MarshalledObject<File>(new
+						File(Paths.get("").toAbsolutePath() + "/" + "projects.ser")));
+		
+		// Option 4
+//		ActivationDesc remoteServiceDesc = new ActivationDesc(activationGroupID,
+//				Servant.class.getCanonicalName(),
+//				ActivationServer.class.getClassLoader().getResource(".").toString(),
+//				new MarshalledObject<File>(new
+//						File(Paths.get("").toAbsolutePath() + "/" + "projects.ser")));
+		
 		
 		// 4) dicho ActivationDesc del servant se lo debe pasar a la unica
 		// instancia Activator del RMID que está levantado para que cuando este
@@ -50,7 +69,7 @@ public class ActivationServer {
 		// Para ello se registra a dicho ActivationDesc y se genera en esta
 		// sentencia el stub del servant (ya que no habrá creación explícita de
 		// la instancia servant codificada)
-		final Remote stub = Activatable.register(servantDescription);
+		final Remote stub = Activatable.register(remoteServiceDesc);
 		logger.info("Activation descriptor registered: " + stub);
 		
 		// 5) si tenemos el stub, listo, hacemos el binding!
